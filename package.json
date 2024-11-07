@@ -1,0 +1,66 @@
+{
+  "name": "sponsify",
+  "description": "",
+  "version": "1.0.0",
+  "author": "",
+  "bin": {
+    "sponsify": "./bin/sponsify.mjs"
+  },
+  "dependencies": {
+    "@antfu/utils": "^0.7.10",
+    "consola": "^3.2.3",
+    "d3-hierarchy": "^3.1.2",
+    "dotenv": "^16.4.5",
+    "normalize-url": "^8.0.1",
+    "ofetch": "^1.3.4",
+    "p-limit": "^6.1.0",
+    "picocolors": "^1.1.0",
+    "sharp": "^0.33.5",
+    "unconfig": "^0.5.5",
+    "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^1.0.0",
+    "@antfu/ni": "^0.21.12",
+    "@types/d3-hierarchy": "^3.1.7",
+    "@types/node": "^22.5.4",
+    "@types/yargs": "^17.0.33",
+    "bumpp": "^9.5.2",
+    "eslint": "^9.10.0",
+    "esno": "^4.7.0",
+    "jiti": "^1.21.6",
+    "synopkg": "^13.0.0",
+    "titan": "^1.3.0",
+    "typescript": "^5.5.4",
+    "unbuild": "^2.0.0",
+    "vite": "^5.4.3",
+    "vitest": "^2.0.5"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "keywords": [],
+  "license": "ISC",
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "packageManager": "pnpm@9.9.0",
+  "scripts": {
+    "build": "unbuild",
+    "dev": "esno sponsify/cli.ts",
+    "lint": "eslint .",
+    "prepublishOnly": "nr build",
+    "release": "bumpp && pnpm publish",
+    "stub": "unbuild --stub",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "sideEffects": false,
+  "types": "./dist/index.d.ts"
+}

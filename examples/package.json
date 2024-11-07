@@ -1,0 +1,11 @@
+{
+  "devDependencies": {
+    "sponsify": "1.0.0"
+  },
+  "private": true,
+  "scripts": {
+    "build": "sponsify",
+    "build:dev": "esno ../src/cli.ts"
+  },
+  "type": "module"
+}
