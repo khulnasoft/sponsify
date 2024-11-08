@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "@posva/prompts": "^2.4.4",
-    "@repo/eslint-config": "workspace:*",
+    "@khulnasoft/eslint-config": "workspace:*",
     "@types/fs-extra": "^11.0.4",
     "@types/ini": "^4.1.1",
     "@types/node": "^22.9.0",

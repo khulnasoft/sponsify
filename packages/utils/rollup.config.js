@@ -22,21 +22,35 @@ const plugins = [
 ];
 
 export default [
+  // JavaScript/TypeScript Builds
   ...entries.map((input) => ({
     input,
     output: [
       {
         file: input.replace("src/", "dist/").replace(".ts", ".mjs"),
         format: "esm",
+        sourcemap: true,
       },
       {
         file: input.replace("src/", "dist/").replace(".ts", ".cjs"),
         format: "cjs",
+        sourcemap: true,
       },
     ],
-    external: [],
+    external: ["@khulnasoft/sponsify-utils"],
     plugins,
+    onwarn: (warning, warn) => {
+      // Skip the inlining warning if it's for @khulnasoft/sponsify-utils
+      if (
+        warning.code === "UNRESOLVED_IMPORT" &&
+        warning.source === "@khulnasoft/sponsify-utils"
+      )
+        return;
+      warn(warning);
+    },
   })),
+
+  // TypeScript Declaration Files
   ...entries.map((input) => ({
     input,
     output: [
@@ -45,15 +59,15 @@ export default [
         format: "esm",
       },
       {
-        file: input.replace("src/", "dist/").replace(".ts", ".d.ts"),
-        format: "esm",
-      },
-      {
         file: input.replace("src/", "dist/").replace(".ts", ".d.cts"),
         format: "cjs",
       },
     ],
     external: ["@khulnasoft/sponsify-utils"],
-    plugins: [dts({ respectExternal: true })],
+    plugins: [
+      dts({
+        respectExternal: true,
+      }),
+    ],
   })),
 ];

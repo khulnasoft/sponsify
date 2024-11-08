@@ -43,7 +43,7 @@
     "test": "vitest"
   },
   "devDependencies": {
-    "@repo/eslint-config": "workspace:*",
+    "@khulnasoft/eslint-config": "workspace:*",
     "@khulnasoft/ni": "^0.0.1",
     "@rollup/plugin-alias": "^5.1.1",
     "@rollup/plugin-commonjs": "^25.0.8",
