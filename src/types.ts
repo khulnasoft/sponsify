@@ -43,7 +43,7 @@ export interface Sponsor {
   /**
    * Map of logins of other social accounts
    *
-   * @example
+   * @examples
    * ```json
    * {
    *   'github': 'khulnasoft',
@@ -349,7 +349,7 @@ export interface SponsifyConfig extends ProvidersConfig, SponsifyRenderOptions {
   /**
    * Merge multiple sponsors, useful for combining sponsors from different providers.
    *
-   * @example
+   * @examples
    * ```js
    * mergeSponsors: [
    *   // Array of sponsor matchers
