@@ -1,6 +1,6 @@
-import { notNullish } from './guards'
-import { isObject } from './is'
-import type { DeepMerge } from './types'
+import { notNullish } from "./guards";
+import { isObject } from "./is";
+import type { DeepMerge } from "./types";
 
 /**
  * Map key/value pairs for an object, and construct a new one
@@ -29,12 +29,20 @@ import type { DeepMerge } from './types'
  * // { b: 2 }
  * ```
  */
-export function objectMap<K extends string, V, NK extends string | number | symbol = K, NV = V>(obj: Record<K, V>, fn: (key: K, value: V) => [NK, NV] | undefined): Record<NK, NV> {
+export function objectMap<
+  K extends string,
+  V,
+  NK extends string | number | symbol = K,
+  NV = V,
+>(
+  obj: Record<K, V>,
+  fn: (key: K, value: V) => [NK, NV] | undefined,
+): Record<NK, NV> {
   return Object.fromEntries(
     Object.entries(obj)
       .map(([k, v]) => fn(k as K, v as V))
       .filter(notNullish),
-  ) as Record<NK, NV>
+  ) as Record<NK, NV>;
 }
 
 /**
@@ -46,7 +54,7 @@ export function objectMap<K extends string, V, NK extends string | number | symb
  * @param k key to check existence in `obj`
  */
 export function isKeyOf<T extends object>(obj: T, k: keyof any): k is keyof T {
-  return k in obj
+  return k in obj;
 }
 
 /**
@@ -55,7 +63,9 @@ export function isKeyOf<T extends object>(obj: T, k: keyof any): k is keyof T {
  * @category Object
  */
 export function objectKeys<T extends object>(obj: T) {
-  return Object.keys(obj) as Array<`${keyof T & (string | number | boolean | null | undefined)}`>
+  return Object.keys(
+    obj,
+  ) as Array<`${keyof T & (string | number | boolean | null | undefined)}`>;
 }
 
 /**
@@ -64,7 +74,7 @@ export function objectKeys<T extends object>(obj: T) {
  * @category Object
  */
 export function objectEntries<T extends object>(obj: T) {
-  return Object.entries(obj) as Array<[keyof T, T[keyof T]]>
+  return Object.entries(obj) as Array<[keyof T, T[keyof T]]>;
 }
 
 /**
@@ -75,44 +85,34 @@ export function objectEntries<T extends object>(obj: T) {
  *
  * @category Object
  */
-export function deepMerge<T extends object = object, S extends object = T>(target: T, ...sources: S[]): DeepMerge<T, S> {
-  if (!sources.length)
-    return target as any
+export function deepMerge<T extends object = object, S extends object = T>(
+  target: T,
+  ...sources: S[]
+): DeepMerge<T, S> {
+  if (!sources.length) return target as any;
 
-  const source = sources.shift()
-  if (source === undefined)
-    return target as any
+  const source = sources.shift();
+  if (source === undefined) return target as any;
 
   if (isMergableObject(target) && isMergableObject(source)) {
     objectKeys(source).forEach((key) => {
-      if (key === '__proto__' || key === 'constructor' || key === 'prototype')
-        return
+      if (key === "__proto__" || key === "constructor" || key === "prototype")
+        return;
 
       // @ts-expect-error
       if (isMergableObject(source[key])) {
         // @ts-expect-error
         if (!target[key])
           // @ts-expect-error
-          target[key] = {}
-
+          target[key] = {};
+      } else {
         // @ts-expect-error
-        if (isMergableObject(target[key])) {
-          // @ts-expect-error
-          deepMerge(target[key], source[key])
-        }
-        else {
-          // @ts-expect-error
-          target[key] = source[key]
-        }
+        target[key] = source[key];
       }
-      else {
-        // @ts-expect-error
-        target[key] = source[key]
-      }
-    })
+    });
   }
 
-  return deepMerge(target, ...sources)
+  return deepMerge(target, ...sources);
 }
 
 /**
@@ -125,54 +125,53 @@ export function deepMerge<T extends object = object, S extends object = T>(targe
  *
  * @category Object
  */
-export function deepMergeWithArray<T extends object = object, S extends object = T>(target: T, ...sources: S[]): DeepMerge<T, S> {
-  if (!sources.length)
-    return target as any
+export function deepMergeWithArray<
+  T extends object = object,
+  S extends object = T,
+>(target: T, ...sources: S[]): DeepMerge<T, S> {
+  if (!sources.length) return target as any;
 
-  const source = sources.shift()
-  if (source === undefined)
-    return target as any
+  const source = sources.shift();
+  if (source === undefined) return target as any;
 
-  if (Array.isArray(target) && Array.isArray(source))
-    target.push(...source)
+  if (Array.isArray(target) && Array.isArray(source)) target.push(...source);
 
   if (isMergableObject(target) && isMergableObject(source)) {
     objectKeys(source).forEach((key) => {
-      if (key === '__proto__' || key === 'constructor' || key === 'prototype')
-        return
+      if (key === "__proto__" || key === "constructor" || key === "prototype")
+        return;
 
       // @ts-expect-error
       if (Array.isArray(source[key])) {
         // @ts-expect-error
         if (!target[key])
           // @ts-expect-error
-          target[key] = []
+          target[key] = [];
 
         // @ts-expect-error
-        deepMergeWithArray(target[key], source[key])
+        deepMergeWithArray(target[key], source[key]);
       }
       // @ts-expect-error
       else if (isMergableObject(source[key])) {
         // @ts-expect-error
         if (!target[key])
           // @ts-expect-error
-          target[key] = {}
+          target[key] = {};
 
         // @ts-expect-error
-        deepMergeWithArray(target[key], source[key])
-      }
-      else {
+        deepMergeWithArray(target[key], source[key]);
+      } else {
         // @ts-expect-error
-        target[key] = source[key]
+        target[key] = source[key];
       }
-    })
+    });
   }
 
-  return deepMergeWithArray(target, ...sources)
+  return deepMergeWithArray(target, ...sources);
 }
 
 function isMergableObject(item: any): item is object {
-  return isObject(item) && !Array.isArray(item)
+  return isObject(item) && !Array.isArray(item);
 }
 
 /**
@@ -180,14 +179,20 @@ function isMergableObject(item: any): item is object {
  *
  * @category Object
  */
-export function objectPick<O extends object, T extends keyof O>(obj: O, keys: T[], omitUndefined = false) {
-  return keys.reduce((n, k) => {
-    if (k in obj) {
-      if (!omitUndefined || obj[k] !== undefined)
-        n[k] = obj[k]
-    }
-    return n
-  }, {} as Pick<O, T>)
+export function objectPick<O extends object, T extends keyof O>(
+  obj: O,
+  keys: T[],
+  omitUndefined = false,
+) {
+  return keys.reduce(
+    (n, k) => {
+      if (k in obj) {
+        if (!omitUndefined || obj[k] !== undefined) n[k] = obj[k];
+      }
+      return n;
+    },
+    {} as Pick<O, T>,
+  );
 }
 
 /**
@@ -197,8 +202,10 @@ export function objectPick<O extends object, T extends keyof O>(obj: O, keys: T[
  */
 export function clearUndefined<T extends object>(obj: T): T {
   // @ts-expect-error
-  Object.keys(obj).forEach((key: string) => (obj[key] === undefined ? delete obj[key] : {}))
-  return obj
+  Object.keys(obj).forEach((key: string) =>
+    obj[key] === undefined ? delete obj[key] : {},
+  );
+  return obj;
 }
 
 /**
@@ -208,7 +215,6 @@ export function clearUndefined<T extends object>(obj: T): T {
  * @category Object
  */
 export function hasOwnProperty<T>(obj: T, v: PropertyKey) {
-  if (obj == null)
-    return false
-  return Object.prototype.hasOwnProperty.call(obj, v)
+  if (obj == null) return false;
+  return Object.prototype.hasOwnProperty.call(obj, v);
 }

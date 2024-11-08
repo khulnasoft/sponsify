@@ -1,5 +1,5 @@
-import { clamp } from './math'
-import type { Arrayable, Nullable } from './types'
+import { clamp } from "./math";
+import type { Arrayable, Nullable } from "./types";
 
 /**
  * Convert `Arrayable<T>` to `Array<T>`
@@ -7,8 +7,8 @@ import type { Arrayable, Nullable } from './types'
  * @category Array
  */
 export function toArray<T>(array?: Nullable<Arrayable<T>>): Array<T> {
-  array = array ?? []
-  return Array.isArray(array) ? array : [array]
+  array = array ?? [];
+  return Array.isArray(array) ? array : [array];
 }
 
 /**
@@ -16,8 +16,10 @@ export function toArray<T>(array?: Nullable<Arrayable<T>>): Array<T> {
  *
  * @category Array
  */
-export function flattenArrayable<T>(array?: Nullable<Arrayable<T | Array<T>>>): Array<T> {
-  return toArray(array).flat(1) as Array<T>
+export function flattenArrayable<T>(
+  array?: Nullable<Arrayable<T | Array<T>>>,
+): Array<T> {
+  return toArray(array).flat(1) as Array<T>;
 }
 
 /**
@@ -26,10 +28,10 @@ export function flattenArrayable<T>(array?: Nullable<Arrayable<T | Array<T>>>): 
  * @category Array
  */
 export function mergeArrayable<T>(...args: Nullable<Arrayable<T>>[]): Array<T> {
-  return args.flatMap(i => toArray(i))
+  return args.flatMap((i) => toArray(i));
 }
 
-export type PartitionFilter<T> = (i: T, idx: number, arr: readonly T[]) => any
+export type PartitionFilter<T> = (i: T, idx: number, arr: readonly T[]) => any;
 
 /**
  * Divide an array into two parts by a filter function
@@ -37,27 +39,65 @@ export type PartitionFilter<T> = (i: T, idx: number, arr: readonly T[]) => any
  * @category Array
  * @example const [odd, even] = partition([1, 2, 3, 4], i => i % 2 != 0)
  */
-export function partition<T>(array: readonly T[], f1: PartitionFilter<T>): [T[], T[]]
-export function partition<T>(array: readonly T[], f1: PartitionFilter<T>, f2: PartitionFilter<T>): [T[], T[], T[]]
-export function partition<T>(array: readonly T[], f1: PartitionFilter<T>, f2: PartitionFilter<T>, f3: PartitionFilter<T>): [T[], T[], T[], T[]]
-export function partition<T>(array: readonly T[], f1: PartitionFilter<T>, f2: PartitionFilter<T>, f3: PartitionFilter<T>, f4: PartitionFilter<T>): [T[], T[], T[], T[], T[]]
-export function partition<T>(array: readonly T[], f1: PartitionFilter<T>, f2: PartitionFilter<T>, f3: PartitionFilter<T>, f4: PartitionFilter<T>, f5: PartitionFilter<T>): [T[], T[], T[], T[], T[], T[]]
-export function partition<T>(array: readonly T[], f1: PartitionFilter<T>, f2: PartitionFilter<T>, f3: PartitionFilter<T>, f4: PartitionFilter<T>, f5: PartitionFilter<T>, f6: PartitionFilter<T>): [T[], T[], T[], T[], T[], T[], T[]]
-export function partition<T>(array: readonly T[], ...filters: PartitionFilter<T>[]): any {
-  const result: T[][] = Array.from({ length: filters.length + 1 }).fill(null).map(() => [])
+export function partition<T>(
+  array: readonly T[],
+  f1: PartitionFilter<T>,
+): [T[], T[]];
+export function partition<T>(
+  array: readonly T[],
+  f1: PartitionFilter<T>,
+  f2: PartitionFilter<T>,
+): [T[], T[], T[]];
+export function partition<T>(
+  array: readonly T[],
+  f1: PartitionFilter<T>,
+  f2: PartitionFilter<T>,
+  f3: PartitionFilter<T>,
+): [T[], T[], T[], T[]];
+export function partition<T>(
+  array: readonly T[],
+  f1: PartitionFilter<T>,
+  f2: PartitionFilter<T>,
+  f3: PartitionFilter<T>,
+  f4: PartitionFilter<T>,
+): [T[], T[], T[], T[], T[]];
+export function partition<T>(
+  array: readonly T[],
+  f1: PartitionFilter<T>,
+  f2: PartitionFilter<T>,
+  f3: PartitionFilter<T>,
+  f4: PartitionFilter<T>,
+  f5: PartitionFilter<T>,
+): [T[], T[], T[], T[], T[], T[]];
+export function partition<T>(
+  array: readonly T[],
+  f1: PartitionFilter<T>,
+  f2: PartitionFilter<T>,
+  f3: PartitionFilter<T>,
+  f4: PartitionFilter<T>,
+  f5: PartitionFilter<T>,
+  f6: PartitionFilter<T>,
+): [T[], T[], T[], T[], T[], T[], T[]];
+export function partition<T>(
+  array: readonly T[],
+  ...filters: PartitionFilter<T>[]
+): any {
+  const result: T[][] = Array.from({ length: filters.length + 1 })
+    .fill(null)
+    .map(() => []);
 
   array.forEach((e, idx, arr) => {
-    let i = 0
+    let i = 0;
     for (const filter of filters) {
       if (filter(e, idx, arr)) {
-        result[i].push(e)
-        return
+        result[i].push(e);
+        return;
       }
-      i += 1
+      i += 1;
     }
-    result[i].push(e)
-  })
-  return result
+    result[i].push(e);
+  });
+  return result;
 }
 
 /**
@@ -66,7 +106,7 @@ export function partition<T>(array: readonly T[], ...filters: PartitionFilter<T>
  * @category Array
  */
 export function uniq<T>(array: readonly T[]): T[] {
-  return Array.from(new Set(array))
+  return Array.from(new Set(array));
 }
 
 /**
@@ -74,13 +114,15 @@ export function uniq<T>(array: readonly T[]): T[] {
  *
  * @category Array
  */
-export function uniqueBy<T>(array: readonly T[], equalFn: (a: any, b: any) => boolean): T[] {
+export function uniqueBy<T>(
+  array: readonly T[],
+  equalFn: (a: any, b: any) => boolean,
+): T[] {
   return array.reduce((acc: T[], cur: any) => {
-    const index = acc.findIndex((item: any) => equalFn(cur, item))
-    if (index === -1)
-      acc.push(cur)
-    return acc
-  }, [])
+    const index = acc.findIndex((item: any) => equalFn(cur, item));
+    if (index === -1) acc.push(cur);
+    return acc;
+  }, []);
 }
 
 /**
@@ -88,10 +130,10 @@ export function uniqueBy<T>(array: readonly T[], equalFn: (a: any, b: any) => bo
  *
  * @category Array
  */
-export function last(array: readonly []): undefined
-export function last<T>(array: readonly T[]): T
+export function last(array: readonly []): undefined;
+export function last<T>(array: readonly T[]): T;
 export function last<T>(array: readonly T[]): T | undefined {
-  return at(array, -1)
+  return at(array, -1);
 }
 
 /**
@@ -100,14 +142,13 @@ export function last<T>(array: readonly T[]): T | undefined {
  * @category Array
  */
 export function remove<T>(array: T[], value: T) {
-  if (!array)
-    return false
-  const index = array.indexOf(value)
+  if (!array) return false;
+  const index = array.indexOf(value);
   if (index >= 0) {
-    array.splice(index, 1)
-    return true
+    array.splice(index, 1);
+    return true;
   }
-  return false
+  return false;
 }
 
 /**
@@ -115,17 +156,15 @@ export function remove<T>(array: T[], value: T) {
  *
  * @category Array
  */
-export function at(array: readonly [], index: number): undefined
-export function at<T>(array: readonly T[], index: number): T
+export function at(array: readonly [], index: number): undefined;
+export function at<T>(array: readonly T[], index: number): T;
 export function at<T>(array: readonly T[] | [], index: number): T | undefined {
-  const len = array.length
-  if (!len)
-    return undefined
+  const len = array.length;
+  if (!len) return undefined;
 
-  if (index < 0)
-    index += len
+  if (index < 0) index += len;
 
-  return array[index]
+  return array[index];
 }
 
 /**
@@ -133,28 +172,27 @@ export function at<T>(array: readonly T[] | [], index: number): T | undefined {
  *
  * @category Array
  */
-export function range(stop: number): number[]
-export function range(start: number, stop: number, step?: number): number[]
+export function range(stop: number): number[];
+export function range(start: number, stop: number, step?: number): number[];
 export function range(...args: any): number[] {
-  let start: number, stop: number, step: number
+  let start: number, stop: number, step: number;
 
   if (args.length === 1) {
-    start = 0
+    start = 0;
     step = 1;
-    ([stop] = args)
-  }
-  else {
-    ([start, stop, step = 1] = args)
+    [stop] = args;
+  } else {
+    [start, stop, step = 1] = args;
   }
 
-  const arr: number[] = []
-  let current = start
+  const arr: number[] = [];
+  let current = start;
   while (current < stop) {
-    arr.push(current)
-    current += step || 1
+    arr.push(current);
+    current += step || 1;
   }
 
-  return arr
+  return arr;
 }
 
 /**
@@ -166,8 +204,8 @@ export function range(...args: any): number[] {
  * @param to
  */
 export function move<T>(arr: T[], from: number, to: number) {
-  arr.splice(to, 0, arr.splice(from, 1)[0])
-  return arr
+  arr.splice(to, 0, arr.splice(from, 1)[0]);
+  return arr;
 }
 
 /**
@@ -176,7 +214,7 @@ export function move<T>(arr: T[], from: number, to: number) {
  * @category Array
  */
 export function clampArrayRange(n: number, arr: readonly unknown[]) {
-  return clamp(n, 0, arr.length - 1)
+  return clamp(n, 0, arr.length - 1);
 }
 
 /**
@@ -186,7 +224,10 @@ export function clampArrayRange(n: number, arr: readonly unknown[]) {
  * @param quantity - quantity of random items which will be returned
  */
 export function sample<T>(arr: T[], quantity: number) {
-  return Array.from({ length: quantity }, _ => arr[Math.round(Math.random() * (arr.length - 1))])
+  return Array.from(
+    { length: quantity },
+    (_) => arr[Math.round(Math.random() * (arr.length - 1))],
+  );
 }
 
 /**
@@ -197,7 +238,7 @@ export function sample<T>(arr: T[], quantity: number) {
 export function shuffle<T>(array: T[]): T[] {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]]
+    [array[i], array[j]] = [array[j], array[i]];
   }
-  return array
+  return array;
 }

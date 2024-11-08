@@ -1,13 +1,13 @@
-import { remove } from './array'
-import type { Fn } from './types'
+import { remove } from "./array";
+import type { Fn } from "./types";
 
 export interface SingletonPromiseReturn<T> {
-  (): Promise<T>
+  (): Promise<T>;
   /**
    * Reset current staled promise.
    * Await it to have proper shutdown.
    */
-  reset: () => Promise<void>
+  reset: () => Promise<void>;
 }
 
 /**
@@ -15,22 +15,22 @@ export interface SingletonPromiseReturn<T> {
  *
  * @category Promise
  */
-export function createSingletonPromise<T>(fn: () => Promise<T>): SingletonPromiseReturn<T> {
-  let _promise: Promise<T> | undefined
+export function createSingletonPromise<T>(
+  fn: () => Promise<T>,
+): SingletonPromiseReturn<T> {
+  let _promise: Promise<T> | undefined;
 
   function wrapper() {
-    if (!_promise)
-      _promise = fn()
-    return _promise
+    if (!_promise) _promise = fn();
+    return _promise;
   }
   wrapper.reset = async () => {
-    const _prev = _promise
-    _promise = undefined
-    if (_prev)
-      await _prev
-  }
+    const _prev = _promise;
+    _promise = undefined;
+    if (_prev) await _prev;
+  };
 
-  return wrapper
+  return wrapper;
 }
 
 /**
@@ -39,13 +39,12 @@ export function createSingletonPromise<T>(fn: () => Promise<T>): SingletonPromis
  * @category Promise
  */
 export function sleep(ms: number, callback?: Fn<any>) {
-  return new Promise<void>(resolve =>
-
+  return new Promise<void>((resolve) =>
     setTimeout(async () => {
-      await callback?.()
-      resolve()
+      await callback?.();
+      resolve();
     }, ms),
-  )
+  );
 }
 
 /**
@@ -65,37 +64,36 @@ export function sleep(ms: number, callback?: Fn<any>) {
  * ```
  */
 export function createPromiseLock() {
-  const locks: Promise<any>[] = []
+  const locks: Promise<any>[] = [];
 
   return {
     async run<T = void>(fn: () => Promise<T>): Promise<T> {
-      const p = fn()
-      locks.push(p)
+      const p = fn();
+      locks.push(p);
       try {
-        return await p
-      }
-      finally {
-        remove(locks, p)
+        return await p;
+      } finally {
+        remove(locks, p);
       }
     },
     async wait(): Promise<void> {
-      await Promise.allSettled(locks)
+      await Promise.allSettled(locks);
     },
     isWaiting() {
-      return Boolean(locks.length)
+      return Boolean(locks.length);
     },
     clear() {
-      locks.length = 0
+      locks.length = 0;
     },
-  }
+  };
 }
 
 /**
  * Promise with `resolve` and `reject` methods of itself
  */
 export interface ControlledPromise<T = void> extends Promise<T> {
-  resolve: (value: T | PromiseLike<T>) => void
-  reject: (reason?: any) => void
+  resolve: (value: T | PromiseLike<T>) => void;
+  reject: (reason?: any) => void;
 }
 
 /**
@@ -113,12 +111,12 @@ export interface ControlledPromise<T = void> extends Promise<T> {
  * ```
  */
 export function createControlledPromise<T>(): ControlledPromise<T> {
-  let resolve: any, reject: any
+  let resolve: any, reject: any;
   const promise = new Promise<T>((_resolve, _reject) => {
-    resolve = _resolve
-    reject = _reject
-  }) as ControlledPromise<T>
-  promise.resolve = resolve
-  promise.reject = reject
-  return promise
+    resolve = _resolve;
+    reject = _reject;
+  }) as ControlledPromise<T>;
+  promise.resolve = resolve;
+  promise.reject = reject;
+  return promise;
 }

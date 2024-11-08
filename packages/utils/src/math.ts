@@ -1,11 +1,11 @@
-import { flattenArrayable } from './array'
+import { flattenArrayable } from "./array";
 
 export function clamp(n: number, min: number, max: number) {
-  return Math.min(max, Math.max(min, n))
+  return Math.min(max, Math.max(min, n));
 }
 
 export function sum(...args: number[] | number[][]) {
-  return flattenArrayable(args).reduce((a, b) => a + b, 0)
+  return flattenArrayable(args).reduce((a, b) => a + b, 0);
 }
 
 /**
@@ -21,8 +21,8 @@ export function sum(...args: number[] | number[][]) {
  * ```
  */
 export function lerp(min: number, max: number, t: number) {
-  const interpolation = clamp(t, 0.0, 1.0)
-  return min + (max - min) * interpolation
+  const interpolation = clamp(t, 0.0, 1.0);
+  return min + (max - min) * interpolation;
 }
 
 /**
@@ -34,7 +34,13 @@ export function lerp(min: number, max: number, t: number) {
  * const value = remap(0.5, 0, 1, 200, 400) // value will be 300
  * ```
  */
-export function remap(n: number, inMin: number, inMax: number, outMin: number, outMax: number) {
-  const interpolation = (n - inMin) / (inMax - inMin)
-  return lerp(outMin, outMax, interpolation)
+export function remap(
+  n: number,
+  inMin: number,
+  inMax: number,
+  outMin: number,
+  outMax: number,
+) {
+  const interpolation = (n - inMin) / (inMax - inMin);
+  return lerp(outMin, outMax, interpolation);
 }

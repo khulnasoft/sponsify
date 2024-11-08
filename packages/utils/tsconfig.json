@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es2018",
+    "target": "ES2018",
+    "jsx": "react-jsx", // Ensure JSX is enabled
     "lib": ["esnext"],
     "module": "esnext",
     "moduleResolution": "node",

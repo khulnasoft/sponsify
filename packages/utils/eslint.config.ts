@@ -1,10 +1,10 @@
-import @khulnasoft-bot from '@khulnasoft/eslint-config'
+import repo from "@repo/eslint-config";
 
-export default @khulnasoft-bot({
+export default repo({
   typescript: {
     overrides: {
-      'ts/ban-ts-comment': 'off',
-      'ts/prefer-ts-expect-error': 'off',
+      "ts/ban-ts-comment": "off",
+      "ts/prefer-ts-expect-error": "off",
     },
   },
-})
+});

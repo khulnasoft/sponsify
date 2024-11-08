@@ -1,4 +1,4 @@
-import { isObject } from './is'
+import { isObject } from "./is";
 
 /**
  * Replace backslash to slash
@@ -6,7 +6,7 @@ import { isObject } from './is'
  * @category String
  */
 export function slash(str: string) {
-  return str.replace(/\\/g, '/')
+  return str.replace(/\\/g, "/");
 }
 
 /**
@@ -15,9 +15,8 @@ export function slash(str: string) {
  * @category String
  */
 export function ensurePrefix(prefix: string, str: string) {
-  if (!str.startsWith(prefix))
-    return prefix + str
-  return str
+  if (!str.startsWith(prefix)) return prefix + str;
+  return str;
 }
 
 /**
@@ -26,9 +25,8 @@ export function ensurePrefix(prefix: string, str: string) {
  * @category String
  */
 export function ensureSuffix(suffix: string, str: string) {
-  if (!str.endsWith(suffix))
-    return str + suffix
-  return str
+  if (!str.endsWith(suffix)) return str + suffix;
+  return str;
 }
 
 /**
@@ -42,15 +40,15 @@ export function ensureSuffix(suffix: string, str: string) {
  * const result = template(
  *   'Hello {0}! My name is {1}.',
  *   'Inès',
- *   'Anthony'
- * ) // Hello Inès! My name is Anthony.
+ *   'Sulaiman'
+ * ) // Hello Inès! My name is Sulaiman.
  * ```
  *
  * ```
  * const result = namedTemplate(
  *   '{greet}! My name is {name}.',
- *   { greet: 'Hello', name: 'Anthony' }
- * ) // Hello! My name is Anthony.
+ *   { greet: 'Hello', name: 'Sulaiman' }
+ * ) // Hello! My name is Sulaiman.
  * ```
  *
  * const result = namedTemplate(
@@ -60,39 +58,49 @@ export function ensureSuffix(suffix: string, str: string) {
  * ) // Hello! My name is placeholder.
  * ```
  */
-export function template(str: string, object: Record<string | number, any>, fallback?: string | ((key: string) => string)): string
-export function template(str: string, ...args: (string | number | bigint | undefined | null)[]): string
+export function template(
+  str: string,
+  object: Record<string | number, any>,
+  fallback?: string | ((key: string) => string),
+): string;
+export function template(
+  str: string,
+  ...args: (string | number | bigint | undefined | null)[]
+): string;
 export function template(str: string, ...args: any[]): string {
-  const [firstArg, fallback] = args
+  const [firstArg, fallback] = args;
 
   if (isObject(firstArg)) {
-    const vars = firstArg as Record<string, any>
-    return str.replace(/{([\w\d]+)}/g, (_, key) => vars[key] || ((typeof fallback === 'function' ? fallback(key) : fallback) ?? key))
-  }
-  else {
+    const vars = firstArg as Record<string, any>;
+    return str.replace(
+      /{([\w\d]+)}/g,
+      (_, key) =>
+        vars[key] ||
+        ((typeof fallback === "function" ? fallback(key) : fallback) ?? key),
+    );
+  } else {
     return str.replace(/{(\d+)}/g, (_, key) => {
-      const index = Number(key)
-      if (Number.isNaN(index))
-        return key
-      return args[index]
-    })
+      const index = Number(key);
+      if (Number.isNaN(index)) return key;
+      return args[index];
+    });
   }
 }
 
 // port from nanoid
 // https://github.com/ai/nanoid
-const urlAlphabet = 'useandom-26T198340PX75pxJACKVERYMINDBUSHWOLF_GQZbfghjklqvwyzrict'
+const urlAlphabet =
+  "useandom-26T198340PX75pxJACKVERYMINDBUSHWOLF_GQZbfghjklqvwyzrict";
 /**
  * Generate a random string
  * @category String
  */
 export function randomStr(size = 16, dict = urlAlphabet) {
-  let id = ''
-  let i = size
-  const len = dict.length
-  while (i--)
-    id += dict[(Math.random() * len) | 0]
-  return id
+  let id = "";
+  let i = size;
+  const len = dict.length;
+  while (i--) id += dict[(Math.random() * len) | 0];
+  return id;
 }
 
 /**
@@ -104,10 +112,10 @@ export function randomStr(size = 16, dict = urlAlphabet) {
  * ```
  */
 export function capitalize(str: string): string {
-  return str[0].toUpperCase() + str.slice(1).toLowerCase()
+  return str[0].toUpperCase() + str.slice(1).toLowerCase();
 }
 
-const _reFullWs = /^\s*$/
+const _reFullWs = /^\s*$/;
 
 /**
  * Remove common leading whitespace from a template string.
@@ -122,26 +130,27 @@ const _reFullWs = /^\s*$/
  * `
  */
 export function unindent(str: TemplateStringsArray | string) {
-  const lines = (typeof str === 'string' ? str : str[0]).split('\n')
-  const whitespaceLines = lines.map(line => _reFullWs.test(line))
+  const lines = (typeof str === "string" ? str : str[0]).split("\n");
+  const whitespaceLines = lines.map((line) => _reFullWs.test(line));
 
-  const commonIndent = lines
-    .reduce((min, line, idx) => {
-      if (whitespaceLines[idx])
-        return min
-      const indent = line.match(/^\s*/)?.[0].length
-      return indent === undefined ? min : Math.min(min, indent)
-    }, Number.POSITIVE_INFINITY)
+  const commonIndent = lines.reduce((min, line, idx) => {
+    if (whitespaceLines[idx]) return min;
+    const indent = line.match(/^\s*/)?.[0].length;
+    return indent === undefined ? min : Math.min(min, indent);
+  }, Number.POSITIVE_INFINITY);
 
-  let emptyLinesHead = 0
+  let emptyLinesHead = 0;
   while (emptyLinesHead < lines.length && whitespaceLines[emptyLinesHead])
-    emptyLinesHead++
-  let emptyLinesTail = 0
-  while (emptyLinesTail < lines.length && whitespaceLines[lines.length - emptyLinesTail - 1])
-    emptyLinesTail++
+    emptyLinesHead++;
+  let emptyLinesTail = 0;
+  while (
+    emptyLinesTail < lines.length &&
+    whitespaceLines[lines.length - emptyLinesTail - 1]
+  )
+    emptyLinesTail++;
 
   return lines
     .slice(emptyLinesHead, lines.length - emptyLinesTail)
-    .map(line => line.slice(commonIndent))
-    .join('\n')
+    .map((line) => line.slice(commonIndent))
+    .join("\n");
 }
