@@ -1,81 +1,222 @@
-# Turborepo starter
+# SponsiFy
 
-This is an official starter Turborepo.
+[![NPM version](https://img.shields.io/npm/v/sponsify?color=a1b858&label=)](https://www.npmjs.com/package/sponsify)
 
-## Using this example
+Toolkit for fetching sponsors info and generating sponsors images.
 
-Run the following command:
+Supports:
 
-```sh
-npx create-turbo@latest
+- [**GitHub Sponsors**](https://github.com/sponsors)
+- [**Patreon**](https://www.patreon.com/)
+- [**OpenCollective**](https://opencollective.com/)
+- [**Afdian**](https://afdian.net/)
+- [**Polar**](https://polar.sh/)
+
+## Usage
+
+Create `.env` file with:
+
+```ini
+; GitHub provider.
+; Token requires the `read:user` and `read:org` scopes.
+SPONSIFY_GITHUB_TOKEN=
+SPONSIFY_GITHUB_LOGIN=
+
+; Patreon provider.
+; Create v2 API key at https://www.patreon.com/portal/registration/register-clients
+; and use the "Creator’s Access Token".
+SPONSIFY_PATREON_TOKEN=
+
+; OpenCollective provider.
+; Create an API key at https://opencollective.com/applications
+SPONSIFY_OPENCOLLECTIVE_KEY=
+; and provide the ID, slug or GitHub handle of your account.
+SPONSIFY_OPENCOLLECTIVE_ID=
+; or
+SPONSIFY_OPENCOLLECTIVE_SLUG=
+; or
+SPONSIFY_OPENCOLLECTIVE_GH_HANDLE=
+; If it is a personal account, set it to `person`. Otherwise not set or set to `collective`
+SPONSIFY_OPENCOLLECTIVE_TYPE=
+
+; Afdian provider.
+; Get user_id at https://afdian.net/dashboard/dev
+SPONSIFY_AFDIAN_USER_ID=
+; Create token at https://afdian.net/dashboard/dev
+SPONSIFY_AFDIAN_TOKEN=
+
+; Polar provider.
+; Get your token at https://polar.sh/settings
+SPONSIFY_POLAR_TOKEN=
+; The name of the organization to fetch sponsorships from.
+SPONSIFY_POLAR_ORGANIZATION=
 ```
 
-## What's inside?
+> Only one provider is required to be configured.
 
-This Turborepo includes the following packages/apps:
+Run:
 
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
+```base
+npx sponsify
 ```
 
-### Develop
+[Example Setup](./example/) | [GitHub Actions Setup](https://github.com/khulnasoft-bot/static/blob/master/.github/workflows/scheduler.yml) | [Generated SVG](https://cdn.jsdelivr.net/gh/khulnasoft/static/sponsors.svg)
 
-To develop all apps and packages, run the following command:
+### Configurations
 
+Create `sponsify.config.js` file with:
+
+```ts
+import { defineConfig, tierPresets } from 'sponsify'
+
+export default defineConfig({
+  // Providers configs
+  github: {
+    login: 'khulnasoft',
+    type: 'user',
+  },
+  opencollective: {
+    // ...
+  },
+  patreon: {
+    // ...
+  },
+  afdian: {
+    // ...
+  },
+  polar: {
+    // ...
+  },
+
+  // Rendering configs
+  width: 800,
+  renderer: 'tiers', // or 'circles'
+  formats: ['json', 'svg', 'png', 'webp'],
+  tiers: [
+    // Past sponsors, currently only supports GitHub
+    {
+      title: 'Past Sponsors',
+      monthlyDollars: -1,
+      preset: tierPresets.xs,
+    },
+    // Default tier
+    {
+      title: 'Backers',
+      preset: tierPresets.base,
+    },
+    {
+      title: 'Sponsors',
+      monthlyDollars: 10,
+      preset: tierPresets.medium,
+    },
+    {
+      title: 'Silver Sponsors',
+      monthlyDollars: 50,
+      preset: tierPresets.large,
+    },
+    {
+      title: 'Gold Sponsors',
+      monthlyDollars: 100,
+      preset: tierPresets.xl,
+    },
+  ],
+})
 ```
-cd my-turborepo
-pnpm dev
+
+Also check [the example](./example/).
+
+### Programmatic Utilities
+
+You can also use SponsiFy programmatically:
+
+```ts
+import { fetchSponsors } from 'sponsify'
+
+const sponsors = await fetchSponsors({
+  github: {
+    token,
+    login,
+  },
+  // ...
+})
 ```
 
-### Remote Caching
+Check the type definition or source code for more utils available.
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+### Renderers
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
+We provide two renderers built-in:
 
+- `tiers`: Render sponsors in tiers.
+- `circles`: Render sponsors in packed circles.
+
+#### Tiers Renderer
+
+```ts
+export default defineConfig({
+  renderer: 'tiers',
+  // ...
+})
 ```
-cd my-turborepo
-npx turbo login
+
+<p align="center">
+  <a href="https://cdn.jsdelivr.net/gh/khulnasoft/static/sponsors.svg">
+    <img src='https://cdn.jsdelivr.net/gh/khulnasoft/static/sponsors.svg'/>
+  </a>
+</p>
+
+#### Circles Renderer
+
+```ts
+export default defineConfig({
+  renderer: 'circles',
+  // ...
+})
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+<p align="center">
+  <a href="https://cdn.jsdelivr.net/gh/khulnasoft/static/sponsors.circles.svg">
+    <img src='https://cdn.jsdelivr.net/gh/khulnasoft/static/sponsors.circles.svg'/>
+  </a>
+</p>
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+### Multiple Renders
 
+We also support rendering multiple images at once with different configurations, via `renders` field:
+
+```ts
+import { defineConfig, tierPresets } from 'sponsify'
+
+export default defineConfig({
+  // Providers configs
+  github: { /* ... */ },
+
+  // Default configs
+  width: 800,
+  tiers: [
+    /* ... */
+  ],
+
+  // Define multiple renders, each will inherit the top-level configs
+  renders: [
+    {
+      name: 'sponsors.tiers',
+      formats: ['svg'],
+    },
+    {
+      name: 'sponsors.wide',
+      width: 1200,
+    },
+    {
+      name: 'sponsors.circles',
+      renderer: 'circles',
+      width: 600,
+    },
+    // ...
+  ],
+})
 ```
-npx turbo link
-```
 
-## Useful Links
+## License
 
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+[MIT](./LICENSE) License © 2022 [Md Sulaiman](https://github.com/khulnasoft-bot)

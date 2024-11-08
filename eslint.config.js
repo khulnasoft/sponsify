@@ -1,5 +1,5 @@
-import repo from "@khulnasoft/eslint-config";
+import khulnasoft from '@khulnasoft/eslint-config'
 
-export default repo({
-  ignores: ["sponsify", "**/sponsify/**"],
-});
+export default khulnasoft({
+  ignores: ['sponsify', '**/sponsify/**'],
+})

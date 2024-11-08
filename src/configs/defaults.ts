@@ -1,32 +1,32 @@
-import { tierPresets } from "./tier-presets";
-import type { SponsifyConfig, Tier } from "../types";
+import { tierPresets } from './tier-presets'
+import type { SponsifyConfig, Tier } from '../types'
 
 export const defaultTiers: Tier[] = [
   {
-    title: "Past Sponsors",
+    title: 'Past Sponsors',
     monthlyDollars: -1,
     preset: tierPresets.xs,
   },
   {
-    title: "Backers",
+    title: 'Backers',
     preset: tierPresets.base,
   },
   {
-    title: "Sponsors",
+    title: 'Sponsors',
     monthlyDollars: 10,
     preset: tierPresets.medium,
   },
   {
-    title: "Silver Sponsors",
+    title: 'Silver Sponsors',
     monthlyDollars: 50,
     preset: tierPresets.large,
   },
   {
-    title: "Gold Sponsors",
+    title: 'Gold Sponsors',
     monthlyDollars: 100,
     preset: tierPresets.xl,
   },
-];
+]
 
 export const defaultInlineCSS = `
 text {
@@ -42,15 +42,15 @@ text {
   font-weight: 500;
   font-size: 20px;
 }
-`;
+`
 
 export const defaultConfig: SponsifyConfig = {
   width: 800,
-  outputDir: "./sponsify",
-  cacheFile: ".cache.json",
-  formats: ["json", "svg", "png"],
+  outputDir: './sponsify',
+  cacheFile: '.cache.json',
+  formats: ['json', 'svg', 'png'],
   tiers: defaultTiers,
-  name: "sponsors",
+  name: 'sponsors',
   includePrivate: false,
   svgInlineCSS: defaultInlineCSS,
-};
+}

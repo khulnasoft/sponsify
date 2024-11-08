@@ -1,4 +1,4 @@
-import type { BadgePreset } from "../types";
+import type { BadgePreset } from '../types'
 
 const none: BadgePreset = {
   avatar: {
@@ -9,7 +9,7 @@ const none: BadgePreset = {
   container: {
     sidePadding: 0,
   },
-};
+}
 
 const base: BadgePreset = {
   avatar: {
@@ -20,7 +20,7 @@ const base: BadgePreset = {
   container: {
     sidePadding: 30,
   },
-};
+}
 
 const xs: BadgePreset = {
   avatar: {
@@ -31,7 +31,7 @@ const xs: BadgePreset = {
   container: {
     sidePadding: 30,
   },
-};
+}
 
 const small: BadgePreset = {
   avatar: {
@@ -42,7 +42,7 @@ const small: BadgePreset = {
   container: {
     sidePadding: 30,
   },
-};
+}
 
 const medium: BadgePreset = {
   avatar: {
@@ -56,7 +56,7 @@ const medium: BadgePreset = {
   name: {
     maxLength: 10,
   },
-};
+}
 
 const large: BadgePreset = {
   avatar: {
@@ -70,7 +70,7 @@ const large: BadgePreset = {
   name: {
     maxLength: 16,
   },
-};
+}
 
 const xl: BadgePreset = {
   avatar: {
@@ -84,7 +84,7 @@ const xl: BadgePreset = {
   name: {
     maxLength: 20,
   },
-};
+}
 
 export const tierPresets = {
   none,
@@ -94,9 +94,9 @@ export const tierPresets = {
   medium,
   large,
   xl,
-};
+}
 
 /**
  * @deprecated Use `tierPresets` instead
  */
-export const presets = tierPresets;
+export const presets = tierPresets

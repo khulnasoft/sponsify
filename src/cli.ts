@@ -1,61 +1,64 @@
-import process from "node:process";
-import yargs from "yargs";
-import { version } from "../package.json";
-import { run } from "./run";
-import type { SponsifyConfig } from "./types";
+import process from 'node:process'
+import yargs from 'yargs'
+import { version } from '../package.json'
+import { run } from './run'
+import type { SponsifyConfig } from './types'
 
 const cli = yargs(process.argv.slice(2))
-  .scriptName("sponsors-svg")
-  .usage("$0 [args]")
+  .scriptName('sponsors-svg')
+  .usage('$0 [args]')
   .version(version)
   .strict()
   .showHelpOnFail(false)
-  .alias("h", "help")
-  .alias("v", "version");
+  .alias('h', 'help')
+  .alias('v', 'version')
 
 cli.command(
-  "*",
-  "Generate",
-  (args) =>
-    args
-      .option("width", {
-        alias: "w",
-        type: "number",
-        default: 800,
-      })
-      .option("fallbackAvatar", {
-        type: "string",
-        alias: "fallback",
-      })
-      .option("force", {
-        alias: "f",
-        default: false,
-        type: "boolean",
-      })
-      .option("name", {
-        type: "string",
-      })
-      .option("filter", {
-        type: "string",
-      })
-      .option("outputDir", {
-        type: "string",
-        alias: ["o", "dir"],
-      })
-      .strict()
-      .help(),
+  '*',
+  'Generate',
+  args => args
+    .option('width', {
+      alias: 'w',
+      type: 'number',
+      default: 800,
+    })
+    .option('fallbackAvatar', {
+      type: 'string',
+      alias: 'fallback',
+    })
+    .option('force', {
+      alias: 'f',
+      default: false,
+      type: 'boolean',
+    })
+    .option('name', {
+      type: 'string',
+    })
+    .option('filter', {
+      type: 'string',
+    })
+    .option('outputDir', {
+      type: 'string',
+      alias: ['o', 'dir'],
+    })
+    .strict()
+    .help(),
   async (options) => {
-    const config = options as SponsifyConfig;
+    const config = options as SponsifyConfig
 
-    if (options._[0]) config.outputDir = options._[0] as string;
+    if (options._[0])
+      config.outputDir = options._[0] as string
 
-    if (options.filter) config.filter = createFilterFromString(options.filter);
+    if (options.filter)
+      config.filter = createFilterFromString(options.filter)
 
-    await run(config);
+    await run(config)
   },
-);
+)
 
-cli.help().parse();
+cli
+  .help()
+  .parse()
 
 /**
  * Create filter function from templates like
@@ -63,12 +66,16 @@ cli.help().parse();
  * - `>=10`
  * @param template
  */
-function createFilterFromString(template: string): SponsifyConfig["filter"] {
-  const [_, op, value] = template.split(/([<>=]+)/);
-  const num = Number.parseInt(value);
-  if (op === "<") return (s) => s.monthlyDollars < num;
-  if (op === "<=") return (s) => s.monthlyDollars <= num;
-  if (op === ">") return (s) => s.monthlyDollars > num;
-  if (op === ">=") return (s) => s.monthlyDollars >= num;
-  throw new Error(`Unable to parse filter template ${template}`);
+function createFilterFromString(template: string): SponsifyConfig['filter'] {
+  const [_, op, value] = template.split(/([<>=]+)/)
+  const num = Number.parseInt(value)
+  if (op === '<')
+    return s => s.monthlyDollars < num
+  if (op === '<=')
+    return s => s.monthlyDollars <= num
+  if (op === '>')
+    return s => s.monthlyDollars > num
+  if (op === '>=')
+    return s => s.monthlyDollars >= num
+  throw new Error(`Unable to parse filter template ${template}`)
 }

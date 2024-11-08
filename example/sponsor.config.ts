@@ -1,15 +1,15 @@
-import { defineConfig, tierPresets } from "sponsify";
+import { defineConfig, tierPresets } from 'sponsify'
 
 export default defineConfig({
   // includePrivate: true,
   tiers: [
     {
-      title: "Past Sponsors",
+      title: 'Past Sponsors',
       monthlyDollars: -1,
       preset: tierPresets.xs,
     },
     {
-      title: "Backers",
+      title: 'Backers',
       // to replace the entire tier rendering
       // compose: (composer, tierSponsors, config) => {
       //   composer.addRaw(
@@ -18,21 +18,21 @@ export default defineConfig({
       // },
     },
     {
-      title: "Sponsors",
+      title: 'Sponsors',
       monthlyDollars: 10,
       preset: tierPresets.medium,
       // to insert custom elements after the tier block
       composeAfter: (composer, _tierSponsors, _config) => {
-        composer.addSpan(10);
+        composer.addSpan(10)
       },
     },
     {
-      title: "Silver Sponsors",
+      title: 'Silver Sponsors',
       monthlyDollars: 50,
       preset: tierPresets.large,
     },
     {
-      title: "Gold Sponsors",
+      title: 'Gold Sponsors',
       monthlyDollars: 100,
       preset: tierPresets.xl,
     },
@@ -40,7 +40,7 @@ export default defineConfig({
 
   // Replace links and avatars
   // replaceLinks: {
-  //   'https://github.com/khulnasoft': 'https://khulnasoft.me',
+  //   'https://github.com/khulnasoft-bot': 'https://khulnasoft.me',
   // },
   // replaceAvatars: {
   //   ...
@@ -60,20 +60,20 @@ export default defineConfig({
   // Run multiple renders with different configurations
   renders: [
     {
-      name: "sponsors",
+      name: 'sponsors',
       width: 800,
-      formats: ["svg", "png"],
+      formats: ['svg', 'png'],
     },
     {
-      name: "sponsors-wide",
+      name: 'sponsors-wide',
       width: 1000,
-      formats: ["svg"],
+      formats: ['svg'],
     },
     {
-      renderer: "circles",
-      name: "sponsors-circles",
+      renderer: 'circles',
+      name: 'sponsors-circles',
       width: 1000,
       includePastSponsors: true,
     },
   ],
-});
+})

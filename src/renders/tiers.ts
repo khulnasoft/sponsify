@@ -1,49 +1,46 @@
-import { partitionTiers } from "../configs";
-import { tierPresets } from "../configs/tier-presets";
-import { SvgComposer } from "../processing/svg";
-import type { SponsifyConfig, SponsifyRenderer, Sponsorship } from "../types";
+import { partitionTiers } from '../configs'
+import { tierPresets } from '../configs/tier-presets'
+import { SvgComposer } from '../processing/svg'
+import type { SponsifyConfig, SponsifyRenderer, Sponsorship } from '../types'
 
-export async function tiersComposer(
-  composer: SvgComposer,
-  sponsors: Sponsorship[],
-  config: SponsifyConfig,
-) {
-  const tierPartitions = partitionTiers(
-    sponsors,
-    config.tiers!,
-    config.includePastSponsors,
-  );
+export async function tiersComposer(composer: SvgComposer, sponsors: Sponsorship[], config: SponsifyConfig) {
+  const tierPartitions = partitionTiers(sponsors, config.tiers!, config.includePastSponsors)
 
-  composer.addSpan(config.padding?.top ?? 20);
+  composer.addSpan(config.padding?.top ?? 20)
 
   for (const { tier: t, sponsors } of tierPartitions) {
-    t.composeBefore?.(composer, sponsors, config);
+    t.composeBefore?.(composer, sponsors, config)
     if (t.compose) {
-      t.compose(composer, sponsors, config);
-    } else {
-      const preset = t.preset || tierPresets.base;
+      t.compose(composer, sponsors, config)
+    }
+    else {
+      const preset = t.preset || tierPresets.base
       if (sponsors.length && preset.avatar.size) {
-        const paddingTop = t.padding?.top ?? 20;
-        const paddingBottom = t.padding?.bottom ?? 10;
-        if (paddingTop) composer.addSpan(paddingTop);
+        const paddingTop = t.padding?.top ?? 20
+        const paddingBottom = t.padding?.bottom ?? 10
+        if (paddingTop)
+          composer.addSpan(paddingTop)
         if (t.title) {
-          composer.addTitle(t.title).addSpan(5);
+          composer
+            .addTitle(t.title)
+            .addSpan(5)
         }
-        await composer.addSponsorGrid(sponsors, preset);
-        if (paddingBottom) composer.addSpan(paddingBottom);
+        await composer.addSponsorGrid(sponsors, preset)
+        if (paddingBottom)
+          composer.addSpan(paddingBottom)
       }
     }
-    t.composeAfter?.(composer, sponsors, config);
+    t.composeAfter?.(composer, sponsors, config)
   }
 
-  composer.addSpan(config.padding?.bottom ?? 20);
+  composer.addSpan(config.padding?.bottom ?? 20)
 }
 
 export const tiersRenderer: SponsifyRenderer = {
-  name: "sponsify:tiers",
+  name: 'sponsify:tiers',
   async renderSVG(config, sponsors) {
-    const composer = new SvgComposer(config);
-    await (config.customComposer || tiersComposer)(composer, sponsors, config);
-    return composer.generateSvg();
+    const composer = new SvgComposer(config)
+    await (config.customComposer || tiersComposer)(composer, sponsors, config)
+    return composer.generateSvg()
   },
-};
+}
