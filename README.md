@@ -60,7 +60,7 @@ Run:
 npx sponsify
 ```
 
-[Example Setup](./example/) | [GitHub Actions Setup](https://github.com/khulnasoft-bot/static/blob/master/.github/workflows/scheduler.yml) | [Generated SVG](https://cdn.jsdelivr.net/gh/khulnasoft/static/sponsors.svg)
+[examples Setup](./examples/) | [GitHub Actions Setup](https://github.com/khulnasoft-bot/static/blob/master/.github/workflows/scheduler.yml) | [Generated SVG](https://cdn.jsdelivr.net/gh/khulnasoft/static/sponsors.svg)
 
 ### Configurations
 
@@ -123,7 +123,7 @@ export default defineConfig({
 })
 ```
 
-Also check [the example](./example/).
+Also check [the examples](./examples/).
 
 ### Programmatic Utilities
 
