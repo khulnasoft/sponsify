@@ -47,6 +47,7 @@
     "release": "bumpp && pnpm publish"
   },
   "dependencies": {
+    "@antfu/eslint-config": "^3.4.1",
     "@khulnasoft/sponsify-utils": "^0.0.1",
     "consola": "^3.2.3",
     "d3-hierarchy": "^3.1.2",
