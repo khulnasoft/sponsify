@@ -1,5 +1,5 @@
+import type { BadgePreset, ImageFormat, SponsifyRenderOptions, Sponsor, Sponsorship } from '../types'
 import { resizeImage } from './image'
-import type { BadgePreset, ImageFormat, Sponsor, SponsifyRenderOptions, Sponsorship } from '../types'
 
 let id = 0
 export function genSvgImage(

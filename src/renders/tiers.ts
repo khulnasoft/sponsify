@@ -1,7 +1,7 @@
+import type { SponsifyConfig, SponsifyRenderer, Sponsorship } from '../types'
 import { partitionTiers } from '../configs'
 import { tierPresets } from '../configs/tier-presets'
 import { SvgComposer } from '../processing/svg'
-import type { SponsifyConfig, SponsifyRenderer, Sponsorship } from '../types'
 
 export async function tiersComposer(composer: SvgComposer, sponsors: Sponsorship[], config: SponsifyConfig) {
   const tierPartitions = partitionTiers(sponsors, config.tiers!, config.includePastSponsors)
