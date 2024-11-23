@@ -1,4 +1,5 @@
-/* eslint-disable unicorn/consistent-function-scoping */
+import type { Buffer } from 'node:buffer'
+import type { SponsifyConfig, SponsifyMainConfig, SponsifyRenderer, SponsifyRenderOptions, SponsorMatcher, Sponsorship } from './types'
 import fs from 'node:fs'
 import fsp from 'node:fs/promises'
 import { dirname, join, relative, resolve } from 'node:path'
@@ -6,7 +7,6 @@ import process from 'node:process'
 import { notNullish } from '@khulnasoft/sponsify-utils'
 import { consola } from 'consola'
 import c from 'picocolors'
-import type { Buffer } from 'node:buffer'
 import { version } from '../package.json'
 import { parseCache, stringifyCache } from './cache'
 import { loadConfig } from './configs'
@@ -14,7 +14,6 @@ import { resolveAvatars, svgToPng, svgToWebp } from './processing/image'
 import { guessProviders, resolveProviders } from './providers'
 import { builtinRenderers } from './renders'
 import { outputFormats } from './types'
-import type { SponsifyConfig, SponsifyMainConfig, SponsifyRenderer, SponsifyRenderOptions, SponsorMatcher, Sponsorship } from './types'
 
 export {
   tiersComposer as defaultComposer,

@@ -1,4 +1,4 @@
-import khulnasoft from '@khulnasoft/eslint-config'
+import khulnasoft from '@antfu/eslint-config'
 
 export default khulnasoft({
   ignores: ['sponsify', '**/sponsify/**'],

@@ -1,8 +1,8 @@
+import type { SponsifyConfig } from './types'
 import process from 'node:process'
 import yargs from 'yargs'
 import { version } from '../package.json'
 import { run } from './run'
-import type { SponsifyConfig } from './types'
 
 const cli = yargs(process.argv.slice(2))
   .scriptName('sponsors-svg')

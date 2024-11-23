@@ -1,5 +1,5 @@
-import { generateBadge, SvgComposer } from '../processing/svg'
 import type { SponsifyRenderer, Sponsorship } from '../types'
+import { generateBadge, SvgComposer } from '../processing/svg'
 
 export const circlesRenderer: SponsifyRenderer = {
   name: 'sponsify:circles',
