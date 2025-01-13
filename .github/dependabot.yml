@@ -1,0 +1,6 @@
+version: 2
+updates:
+  - package-ecosystem: "pnpm" # Use pnpm as the package ecosystem
+    directory: "/" # Location of your pnpm workspace or package manifests
+    schedule:
+      interval: "weekly" # Update dependencies every week
