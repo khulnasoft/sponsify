@@ -1,6 +1,21 @@
 version: 2
 updates:
-  - package-ecosystem: "pnpm" # Use pnpm as the package ecosystem
-    directory: "/" # Location of your pnpm workspace or package manifests
+  - package-ecosystem: npm
+    directory: '/'
     schedule:
-      interval: "weekly" # Update dependencies every week
+      interval: daily
+    commit-message:
+      prefix: ⬆
+  - package-ecosystem: npm
+    directory: '/docs'
+    schedule:
+      interval: daily
+    commit-message:
+      prefix: ⬆
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      # Check for updates to GitHub Actions every weekday
+      interval: 'daily'
+    commit-message:
+      prefix: ⬆
